@@ -18,6 +18,7 @@ if instance_exists(oCpu) {
 				
 				oCpu._string_da_tela = retorno
 				oCpu.top_text = ""
+				oCpu.valor2 = 0
 			}
 			
 			
@@ -35,6 +36,9 @@ if instance_exists(oCpu) {
 	
 	
 	else {
+		
+		
+		
 		if oCpu.ultimo_operador != "*" && operator_ == "*" && oCpu.ultimo_operador != "" && oCpu.ultimo_operador != "=" {
 			
 			var retorno = equals(oCpu.valor1, oCpu.valor2, oCpu.ultimo_operador)
@@ -74,6 +78,7 @@ if instance_exists(oCpu) {
 	if oCpu.ultimo_operador == "=" {
 		oCpu.valor2 = oCpu.valor1
 		oCpu._string_da_tela = oCpu.valor2
+		oCpu.valor2 = 0
 	}
 }
 
