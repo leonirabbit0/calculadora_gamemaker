@@ -42,7 +42,7 @@ var historico_y = 420
 //draw_text(360, 32, $"valor1: {oCpu.valor1} \nvalor2:{oCpu.valor2} \n ")
 
 
-if array_length(oCpu.historico) > 0{
+if array_length(oCpu.historico) > 0 {
 	for (var i= real(array_length(oCpu.historico)); i > 0; i--) {
 		draw_text(historico_x, historico_y, $"{oCpu.historico[i-1]}")
 		draw_sprite(sLinha, 0, historico_x, historico_y);

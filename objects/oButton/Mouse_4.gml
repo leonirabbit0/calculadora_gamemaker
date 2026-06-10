@@ -1,30 +1,43 @@
-
-/*
 animando = true;
 offset_y = 16;
 
 
+
 if instance_exists(oCpu) {
+	
+	// Condicional para trabalhar em cima das possibilidades de numeros e operações
+	
+	
 	if number_ >= 0 {
-		oCpu.valor2 = (oCpu.valor2 * 10) + number_
-		oCpu._string_da_tela = oCpu.valor2
 		
-		if oCpu.ultimo_operador == "-" {
-			oCpu.valor2 = -oCpu.valor2
-		}
-		
-		if oCpu.ultimo_operador == "." {
+		// Evita que o a quantidade de caracteres passe do limite da tela
+		if string_length(string(oCpu.valor2)) < 10 {
+			
+			if oCpu.ultimo_operador == "=" {
+				var retorno = handle_operators("CE")
+				
+				oCpu._string_da_tela = retorno
+				oCpu.top_text = ""
+			}
+			
+			
+			oCpu.valor2 = (oCpu.valor2 * 10) + number_
+			oCpu._string_da_tela = oCpu.valor2
+			
+			
+			if oCpu.ultimo_operador == "-" {
+				oCpu.valor2 = -oCpu.valor2
+			}
 			
 			
 		}
-		
-		
 	}
+	
+	
 	else {
-		if oCpu.ultimo_operador != "*" && operator_ == "*" && oCpu.ultimo_operador != "" {
-			var retorno = equals(oCpu.valor1, oCpu.valor2, oCpu.ultimo_operador)
+		if oCpu.ultimo_operador != "*" && operator_ == "*" && oCpu.ultimo_operador != "" && oCpu.ultimo_operador != "=" {
 			
-			show_debug_message(retorno)
+			var retorno = equals(oCpu.valor1, oCpu.valor2, oCpu.ultimo_operador)
 			
 			array_push(oCpu.historico, retorno[1])
 			oCpu.valor2 = 0
@@ -33,18 +46,19 @@ if instance_exists(oCpu) {
 			oCpu.ultimo_operador = "*"
 			oCpu.top_text = retorno[1]
 		}
-
+			
 		else {
-			if oCpu.ultimo_operador != "/" && operator_ == "/" && oCpu.ultimo_operador != ""{
-			var retorno = equals(oCpu.valor1, oCpu.valor2, oCpu.ultimo_operador)
-			array_push(oCpu.historico, retorno[1])
-			show_debug_message(retorno)
-			oCpu.valor2 = 0
-			oCpu.valor1 = retorno[0]
-			
-			oCpu.ultimo_operador = "/"
-			oCpu.top_text = retorno[1]
-			
+			if oCpu.ultimo_operador != "/" && operator_ == "/" && oCpu.ultimo_operador != "" && oCpu.ultimo_operador != "=" {
+				var retorno = equals(oCpu.valor1, oCpu.valor2, oCpu.ultimo_operador)
+				
+				array_push(oCpu.historico, retorno[1])
+				
+				oCpu.valor1 = retorno[0]
+				oCpu.ultimo_operador = "/"
+				oCpu.top_text = retorno[1]
+				
+				oCpu.valor2 = 0
+				
 			} else {
 				if operator_ != "Delete" {
 					oCpu.top_text = handle_operators(operator_)
@@ -55,6 +69,11 @@ if instance_exists(oCpu) {
 				}
 			}
 		}
+	}
+	
+	if oCpu.ultimo_operador == "=" {
+		oCpu.valor2 = oCpu.valor1
+		oCpu._string_da_tela = oCpu.valor2
 	}
 }
 
@@ -111,7 +130,9 @@ function handle_operators (operator) {
 		case "/":
 			
 			if oCpu.ultimo_operador == "/" {
+				oCpu.valor1 = oCpu.valor1 / oCpu.valor2
 				oCpu.valor2 = 0
+				
 				return $"{oCpu.valor1}/"
 			}
 			
@@ -132,14 +153,14 @@ function handle_operators (operator) {
 		case "=":
 		
 			if ultimo_operador == "=" or ultimo_operador == "" {
-				return oCpu.valor2
+				return oCpu.top_text
 			}
 			
 			var retorno = equals(oCpu.valor1, oCpu.valor2, ultimo_operador)
 			
 			show_debug_message(retorno)
 			array_push(oCpu.historico, retorno[1])
-			oCpu.valor2 = 0
+		
 			oCpu.valor1 = retorno[0]
 			
 			oCpu.ultimo_operador = "="
@@ -174,4 +195,3 @@ function executar_operacao_pendente(operador) {
 	}
 }
 
-*/
